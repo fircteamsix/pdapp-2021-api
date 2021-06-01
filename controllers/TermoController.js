@@ -1,41 +1,36 @@
-const Usuario = require('../models/Usuario')
-const md5 = require('md5');
+const TermoDeUso = require('../models/TermoDeUso')
 
 module.exports = {
   async create (req, res){
-    const usuario  = req.body
-    //Consultar o E-Mail
-    const buscaEmail = await Usuario.findOne({ where: { email: usuario.email } })
-    if(!buscaEmail) {
-      usuario.senha = md5(usuario.senha + usuario.email) //Criptografia da senha em md5
-      const cadastro = await Usuario.create(usuario)
+    const termo  = req.body
+    const cadastro = await TermoDeUso.create(termo)
+    if(cadastro){
       const resposta = {
         mensagem: 'Resultado', 
-        usuario: cadastro
+        termo: cadastro
       }
       return res.status(201).send(resposta)
-    } else {
+    }else {
       const resposta = {
         mensagem: 'Resultado', 
-        erro: buscaEmail
+        erro: cadastro
       }
       return res.status(406).send(resposta)
     }
   },
-  async login (req, res) {
+  async read (req, res) {
     const dados = req.params
-    const senhaMd5 = md5(dados.senha + dados.email)
     //Consultar os dados
-    const user = await Usuario.findOne({ where: { email: dados.email, senha: senhaMd5 }})
-    if(!user){
+    const termo = await TermoDeUso.findOne({ where: { cd_termo: dados.cd_termo }})
+    if(!termo){
       const resposta = {
-        mensagem: 'E-mail ou Senha invalidas.'
+        mensagem: 'Nenhum termo encontrado.'
       }
       return res.status(401).send(resposta)
     } else {
       const resposta = {
-        mensagem: 'Usuario autorizado.',
-        usuario: user.cd_usuario
+        mensagem: 'Termo encontrado.',
+        termo: termo.cd_termo
       }
       return res.status(202).send(resposta)
     }
@@ -86,21 +81,6 @@ module.exports = {
       }
       return res.status(200).send(resposta)
     }
-  },
-
-  async delete (req, res) {
-    const { cd_usuario } = req.body
-    const deletar = await Usuario.destroy({ where: { cd_usuario: cd_usuario }})
-    if(!deletar) {
-      const resposta = {
-        mensagem: 'Erro ao deletar usuario'
-      }
-      return res.status(400).send(resposta)
-    } else {
-      const resposta = {
-        mensagem: 'Usuario deletado'
-      }
-      return res.status(200).send(resposta)
-    }
   }
 }
+
