@@ -1,4 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
+const Campanhas = require('./Campanhas');
 
 class Usuario extends Model {
     static init(sequelize){
@@ -23,6 +24,8 @@ class Usuario extends Model {
             updatedAt: false
         })
     }
+    static associate(models) {
+        this.hasMany(models.Campanhas)
+    }
 }
-
 module.exports = Usuario;
