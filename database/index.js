@@ -9,7 +9,6 @@ const connection = new Sequelize(dbConfig);
 Usuario.init(connection);
 Campanhas.init(connection)
 
-Usuario.associate(connection.models)
 Campanhas.associate(connection.models)
 
 module.exports = connection;

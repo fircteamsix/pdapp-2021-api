@@ -22,6 +22,7 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(express.json());
+app.use(express.static('public'))
 app.use(routes);
 app.use(morgan('dev'))
 

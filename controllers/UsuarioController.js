@@ -1,5 +1,15 @@
 const Usuario = require('../models/Usuario')
-const md5 = require('md5');
+const md5 = require('md5')
+const formidable = require('formidable')
+const path = require('path')
+const fs = require('fs')
+
+const folder = path.join('public/img')
+
+if (!fs.existsSync(folder)) {
+  fs.mkdirSync(folder)
+}
+var nome_foto = ""
 
 module.exports = {
   async create (req, res){
@@ -40,6 +50,21 @@ module.exports = {
       return res.status(202).send(resposta)
     }
   },
+  async upload (req, res) {
+    cd_usuario = req.params.cd_usuario
+    const form = new formidable.IncomingForm()
+    form.uploadDir = folder
+
+    form.parse(req, async (_, fields, files) => {
+      nome_foto = files.file.path.substring(11)
+      const user = await Usuario.update({ foto: nome_foto }, { where: { cd_usuario: cd_usuario }})
+      if (!user) {
+        return res.status(500).send({ mensagem: 'Ocorreu um erro ao gravar a imagem.'})
+      } else {
+        return res.status(200).send({ mensagem: 'Imagem atualizada com sucesso.'})
+      }
+    })
+  },
 
   async read (req, res) {
     const dados = req.params
@@ -63,7 +88,8 @@ module.exports = {
           cidade: user.cidade,
           tipo_sanguineo: user.tipo_sanguineo,
           estado: user.estado,
-          data_nascimento: user.data_nascimento
+          data_nascimento: user.data_nascimento,
+          foto: user.foto
         }
       }
       return res.status(202).send(resposta)
@@ -72,7 +98,7 @@ module.exports = {
 
   async update (req, res) {
     const usuario = req.body
-    usuario.senha = md5(usuario.senha + usuario.email) //Criptografia da senha em md5
+    this.usuario.senha = md5(usuario.senha + usuario.email) //Criptografia da senha em md5
     const update = await Usuario.update( usuario, { where: { cd_usuario: usuario.cd_usuario }})
     if(!update) {
       //Negação

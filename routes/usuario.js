@@ -4,6 +4,7 @@ const router = express.Router()
 const UsuarioController = require('../controllers/UsuarioController')
 
 router.post('/', UsuarioController.create)
+router.post('/upload/:cd_usuario', UsuarioController.upload)
 router.get('/:email/:senha', UsuarioController.login)
 router.get('/:cd_usuario', UsuarioController.read)
 router.put('/', UsuarioController.update)

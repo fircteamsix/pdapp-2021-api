@@ -16,6 +16,7 @@ class Usuario extends Model {
             complemento: DataTypes.STRING,
             tipo_sanguineo: DataTypes.CHAR,
             data_nascimento: DataTypes.STRING,
+            foto: DataTypes.STRING
         },{
             sequelize,
             freezeTableName: true,
@@ -23,9 +24,6 @@ class Usuario extends Model {
             createdAt: false,
             updatedAt: false
         })
-    }
-    static associate(models) {
-        this.hasMany(models.Campanhas)
     }
 }
 module.exports = Usuario;
