@@ -2,6 +2,26 @@
 
 Campanhas beneficentes de doação de sangue
 
+## Configurações/Instalação do Node
+Usando o Instalador do Node.
+
+```bash
+Acesse o link para baixar o instalador (De preferença as LTS)
+
+https://nodejs.org/en/
+
+```
+
+Usando o NVM
+
+```bash
+nvm list available
+
+nvm install 12.22.1 // Informe a versão que deseja. (De preferença as LTS)
+
+nvm use 12.22.1 // Comando para usar a versão que foi instalada.
+```
+
 ## Install the dependencies
 ```bash
 yarn

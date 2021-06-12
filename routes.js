@@ -10,4 +10,7 @@ app.use('/termo', rotaTermo)
 const rotaCampanha = require('./routes/campanhas')
 app.use('/campanhas', rotaCampanha)
 
+const rotaHemocentros = require('./routes/hemocentros')
+app.use('/hemocentros', rotaHemocentros)
+
 module.exports = app;

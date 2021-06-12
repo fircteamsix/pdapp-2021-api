@@ -89,7 +89,9 @@ module.exports = {
           tipo_sanguineo: user.tipo_sanguineo,
           estado: user.estado,
           data_nascimento: user.data_nascimento,
-          foto: user.foto
+          foto: user.foto,
+          senha: '',
+          confSenha: ''
         }
       }
       return res.status(202).send(resposta)
@@ -98,7 +100,7 @@ module.exports = {
 
   async update (req, res) {
     const usuario = req.body
-    this.usuario.senha = md5(usuario.senha + usuario.email) //Criptografia da senha em md5
+    usuario.senha = md5(usuario.senha + usuario.email) //Criptografia da senha em md5
     const update = await Usuario.update( usuario, { where: { cd_usuario: usuario.cd_usuario }})
     if(!update) {
       //Negação

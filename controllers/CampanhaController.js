@@ -46,7 +46,7 @@ module.exports = {
 
   async getCampanhaUser (req, res) {
     const { cd_usuario } = req.params
-    const { count, rows }= await Campanhas.findAndCountAll({ where: { cd_usuario: cd_usuario }})
+    const { count, rows } = await Campanhas.findAndCountAll({ where: { cd_usuario: cd_usuario }})
     if (count > 0) {
       // exibe resultados
       return res.status(200).send({ mensagem: "Campanhas desse usuario.", campanhas: rows})
