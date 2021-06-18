@@ -70,5 +70,22 @@ module.exports = {
         return res.status(200).send({ mensagem: 'Imagem atualizada com sucesso.'})
       }
     })
+  },
+
+  async update (req, res) {
+    const campanha = req.body
+    const update = await Campanhas.update( campanha, { where: { id_campanha: req.params.id_campanha }})
+    if(!update) {
+      //Negação
+      const resposta = {
+        mensagem: 'Erro na atualização'
+      }
+      return res.status(400).send(resposta)
+    } else {
+      const resposta = {
+        mensagem: 'Dados atualizado'
+      }
+      return res.status(200).send(resposta)
+    }
   }
 }
