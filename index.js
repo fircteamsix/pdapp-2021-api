@@ -26,10 +26,6 @@ app.use(express.static('public'))
 app.use(routes);
 app.use(morgan('dev'))
 
-app.use('/', (req, res) => {
-    res.send('Olllaaa')
-})
-
 app.listen(porta, () => {
     console.log("Servidor PDApp online kinghost")
 }); 
