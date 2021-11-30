@@ -26,6 +26,6 @@ app.use(express.static('public'))
 app.use(routes);
 app.use(morgan('dev'))
 
-app.listen(porta, ()=>{
-    console.log("Servidor PDApp online")
+app.listen(porta, () => {
+    console.log("Servidor PDApp online na porta: " + porta)
 }); 
