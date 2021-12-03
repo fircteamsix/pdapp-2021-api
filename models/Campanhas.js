@@ -1,7 +1,7 @@
 const { Model, DataTypes, BelongsTo } = require('sequelize');
 
 class Campanhas extends Model {
-    static init(sequelize){
+    static init(sequelize) {
         super.init({
             id_campanha: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
             titulo_paciente: DataTypes.STRING,
@@ -11,7 +11,7 @@ class Campanhas extends Model {
             tipo_sanguineo: DataTypes.STRING,
             foto: DataTypes.STRING,
             estado: DataTypes.STRING
-        },{
+        }, {
             sequelize,
             freezeTableName: true,
             tableName: 'campanhas',

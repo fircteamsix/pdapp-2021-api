@@ -2,9 +2,8 @@ const { Model, DataTypes } = require('sequelize');
 const Campanhas = require('./Campanhas');
 
 class Usuario extends Model {
-    static init(sequelize){
+    static init(sequelize) {
         super.init({
-            cd_usuario: { type: DataTypes.INTEGER, primaryKey: true },
             nome: DataTypes.STRING,
             email: DataTypes.STRING,
             senha: DataTypes.STRING,
@@ -16,8 +15,10 @@ class Usuario extends Model {
             complemento: DataTypes.STRING,
             tipo_sanguineo: DataTypes.CHAR,
             data_nascimento: DataTypes.STRING,
-            foto: DataTypes.STRING
-        },{
+            foto: DataTypes.STRING,
+            status: DataTypes.INTEGER,
+            admin: DataTypes.STRING,
+        }, {
             sequelize,
             freezeTableName: true,
             tableName: 'usuario',

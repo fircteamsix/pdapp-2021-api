@@ -11,28 +11,33 @@ if (!fs.existsSync(folder)) {
 var nome_foto = ""
 
 module.exports = {
-  async create (req, res){
-    const data  = req.body.hemocentros
+  async create(req, res) {
+    const data = req.body.hemocentros
     var x
 
-    for(x in data) {
-        var cadastro = await Hemocentros.create(data[x]).then(resposta => {
-            console.log('Hemocentro cadastrado: ' + cadastro)
-        })
+    for (x in data) {
+      var cadastro = await Hemocentros.create(data[x]).then(resposta => {
+        console.log('Hemocentro cadastrado: ' + cadastro)
+      })
     }
     return res.send('Todos os hemocentros foram cadastrados')
   },
 
-  async read (req, res) {
+  async readAll(req, res) {
+    const hemocentros = await Hemocentros.findAll();
+    return res.status(200).send(hemocentros);
+  },
+
+  async read(req, res) {
     const data = req.params
     //Consultar os dados
-    const { count, rows } = await Hemocentros.findAndCountAll({ where: { estado: data.estado }})
+    const { count, rows } = await Hemocentros.findAndCountAll({ where: { estado: data.estado } })
     if (count > 0) {
-        // exibe resultados
-        res.status(200).send({ mensagem: "Hemocentros.", hemocentros: rows})
+      // exibe resultados
+      res.status(200).send({ mensagem: "Hemocentros.", hemocentros: rows })
     } else {
-        // nao encontrou hemocentros para esse estado
-        return res.status(404).send({ mensagem: "Usuario não tem campanhas."})
+      // nao encontrou hemocentros para esse estado
+      return res.status(404).send({ mensagem: "Usuario não tem campanhas." })
     }
   }
 }

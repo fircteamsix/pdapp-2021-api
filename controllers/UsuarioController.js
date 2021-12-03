@@ -57,7 +57,7 @@ module.exports = {
 
     form.parse(req, async (_, fields, files) => {
       nome_foto = files.file.path.substring(11)
-      const user = await Usuario.update({ foto: nome_foto }, { where: { cd_usuario: cd_usuario } })
+      const user = await Usuario.update({ foto: nome_foto }, { where: { id: cd_usuario } })
       if (!user) {
         return res.status(500).send({ mensagem: 'Ocorreu um erro ao gravar a imagem.' })
       } else {
@@ -69,7 +69,7 @@ module.exports = {
   async read(req, res) {
     const dados = req.params
     //Consultar os dados
-    const user = await Usuario.findOne({ where: { cd_usuario: dados.cd_usuario } })
+    const user = await Usuario.findOne({ where: { id: dados.cd_usuario } })
     if (!user) {
       //Não achou o email ou senha
       const resposta = {
@@ -80,7 +80,7 @@ module.exports = {
       const resposta = {
         mensagem: 'Usuario encontrado.',
         usuario: {
-          cd_usuario: user.cd_usuario,
+          id: user.cd_usuario,
           nome: user.nome,
           email: user.email,
           rua: user.rua,
@@ -98,10 +98,19 @@ module.exports = {
     }
   },
 
+  async readAll(req, res) {
+    const users = await Usuario.findAll();
+    const resposta = {
+      mensagem: 'Usuarios',
+      usuarios: users
+    }
+    return res.status(200).send(users);
+  },
+
   async update(req, res) {
     const usuario = req.body
     usuario.senha = md5(usuario.senha + usuario.email) //Criptografia da senha em md5
-    const update = await Usuario.update(usuario, { where: { cd_usuario: usuario.cd_usuario } })
+    const update = await Usuario.update(usuario, { where: { id: usuario.id } })
     if (!update) {
       //Negação
       const resposta = {
@@ -116,9 +125,25 @@ module.exports = {
     }
   },
 
+  async banir(req, res) {
+    const usuario = req.body
+    const update = await Usuario.update({ status: usuario.status }, { where: { id: usuario.id } })
+    if (!update) {
+      const resposta = {
+        mensagem: 'Erro na atualização'
+      }
+      return res.status(400).send(resposta)
+    } else {
+      const resposta = {
+        mensagem: 'Dados atualizado'
+      }
+      return res.status(200).send(resposta)
+    }
+  },
+
   async delete(req, res) {
-    const { cd_usuario } = req.body
-    const deletar = await Usuario.destroy({ where: { cd_usuario: cd_usuario } })
+    const { id } = req.body
+    const deletar = await Usuario.destroy({ where: { id: id } })
     if (!deletar) {
       const resposta = {
         mensagem: 'Erro ao deletar usuario'

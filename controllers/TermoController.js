@@ -1,28 +1,28 @@
 const TermoDeUso = require('../models/TermoDeUso')
 
 module.exports = {
-  async create (req, res){
-    const termo  = req.body
+  async create(req, res) {
+    const termo = req.body
     const cadastro = await TermoDeUso.create(termo)
-    if(cadastro){
+    if (cadastro) {
       const resposta = {
-        mensagem: 'Resultado', 
+        mensagem: 'Resultado',
         termo: cadastro
       }
       return res.status(201).send(resposta)
-    }else {
+    } else {
       const resposta = {
-        mensagem: 'Resultado', 
+        mensagem: 'Resultado',
         erro: cadastro
       }
       return res.status(406).send(resposta)
     }
   },
-  async read (req, res) {
+  async read(req, res) {
     const dados = req.params
     //Consultar os dados
-    const termo = await TermoDeUso.findOne({ where: { cd_termo: dados.cd_termo }})
-    if(!termo){
+    const termo = await TermoDeUso.findOne({ where: { cd_termo: dados.cd_termo } })
+    if (!termo) {
       const resposta = {
         mensagem: 'Nenhum termo encontrado.'
       }
@@ -36,11 +36,11 @@ module.exports = {
     }
   },
 
-  async read (req, res) {
+  async read(req, res) {
     const dados = req.params
     //Consultar os dados
-    const user = await Usuario.findOne({ where: { cd_usuario: dados.cd_usuario }})
-    if(!user){
+    const user = await Usuario.findOne({ where: { id: dados.cd_usuario } })
+    if (!user) {
       //Não achou o email ou senha
       const resposta = {
         mensagem: 'Usuario informado não localizado.'
@@ -50,7 +50,7 @@ module.exports = {
       const resposta = {
         mensagem: 'Usuario encontrado.',
         usuario: {
-          cd_usuario: user.cd_usuario,
+          id: user.cd_usuario,
           nome: user.nome,
           email: user.email,
           rua: user.rua,
@@ -65,11 +65,11 @@ module.exports = {
     }
   },
 
-  async update (req, res) {
+  async update(req, res) {
     const usuario = req.body
     usuario.senha = md5(usuario.senha + usuario.email) //Criptografia da senha em md5
-    const update = await Usuario.update( usuario, { where: { cd_usuario: usuario.cd_usuario }})
-    if(!update) {
+    const update = await Usuario.update(usuario, { where: { id: usuario.cd_usuario } })
+    if (!update) {
       //Negação
       const resposta = {
         mensagem: 'Erro na atualização'
